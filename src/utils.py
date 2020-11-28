@@ -45,7 +45,7 @@ def get_beat_vector(beat_pos, meter):
     if beat_pos in strong:
         beat_st = "strong beat"
     elif beat_pos in weak:
-        beat_st = "weak brat"
+        beat_st = "weak beat"
     else:
         beat_st = "off beat"
     #print(beat_vec)
@@ -105,7 +105,7 @@ def process_note(note):
     return out_note
 
 
-def to_12d_vec(note_list):
+def to_chromatic(note_list):
     '''
     one-hot encoding on 21 dimension with input of a list in note name
 
@@ -114,18 +114,20 @@ def to_12d_vec(note_list):
     Output:
         output_vec - list[int] of 21 elements
     '''
-    dic = {'C':0, 'C#':1, 'D-':1, 'D':2, 'D#':3, 'E-':3, 'E':4, 'E#':5, 'F-':4, 'F':5, 'F#':10, 
-    'G-':11, 'G':12, 'G#':13, 'A-':14, 'A':15, 'A#':16, 'B-':17, 'B':18, 'B#':19, 'C-':20}
+    dic = {'C':0, 'C#':1, 'D-':1, 'D':2, 'D#':3, 'E-':3, 'E':4, 'E#':5, 'F-':4, 'F':5, 'F#':6, 
+    'G-':6, 'G':7, 'G#':8, 'A-':8, 'A':9, 'A#':10, 'B-':10, 'B':11, 'B#':0, 'C-':11}
 
-    out_vec = [0]*21
+    output = []
 
     for note in note_list:
         note_name = process_note(note)
-        idx = dic[note_name]
-        if out_vec[idx] == 0:
-            out_vec[idx] = 1
-    return out_vec
+        pitch = dic[note_name]
+        if pitch not in output:
+            output.append(pitch)
+    output.sort()
+    return output
 
+#print(to_chromatic(['F#', 'a#', 'c#', 'ff#']))
 
 
         
