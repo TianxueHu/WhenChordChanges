@@ -43,13 +43,13 @@ def get_beat_vector(beat_pos, meter):
     strong, weak = define_beat_from_meter(meter)
 
     if beat_pos in strong:
-        beat_vec = [1,0,0]
+        beat_st = "strong beat"
     elif beat_pos in weak:
-        beat_vec = [0,1,0]
+        beat_st = "weak brat"
     else:
-        beat_vec = [0,0,1]
+        beat_st = "off beat"
     #print(beat_vec)
-    return beat_vec 
+    return beat_st 
 
 
 def get_onset_notes(cur_onset_notes, prev_onset_notes):
@@ -66,22 +66,6 @@ def get_onset_notes(cur_onset_notes, prev_onset_notes):
     onset_notes = [x for x in cur_onset_notes if x not in prev_onset_notes]
     return onset_notes
 
-
-def to_12d_vec(note_list):
-    '''
-    one-hot encoding on 12 dimension (12 semitones) with input of a list in note name
-
-    Input: 
-        note_list - list[string]
-    Output:
-        output_vec - list[int] of 12 elements
-    '''
-    output_vec = [0]*12
-    for midi in note_list:
-        n = midi%12
-        if output_vec[n] == 0:
-            output_vec[n] = 1
-    return output_vec
 
 def process_note(note):
     '''
@@ -121,7 +105,7 @@ def process_note(note):
     return out_note
 
 
-def to_21d_vec(note_list):
+def to_12d_vec(note_list):
     '''
     one-hot encoding on 21 dimension with input of a list in note name
 
@@ -130,7 +114,7 @@ def to_21d_vec(note_list):
     Output:
         output_vec - list[int] of 21 elements
     '''
-    dic = {'C':0, 'C#':1, 'D-':2, 'D':3, 'D#':4, 'E-':5, 'E':6, 'E#':7, 'F-':8, 'F':9, 'F#':10, 
+    dic = {'C':0, 'C#':1, 'D-':1, 'D':2, 'D#':3, 'E-':3, 'E':4, 'E#':5, 'F-':4, 'F':5, 'F#':10, 
     'G-':11, 'G':12, 'G#':13, 'A-':14, 'A':15, 'A#':16, 'B-':17, 'B':18, 'B#':19, 'C-':20}
 
     out_vec = [0]*21
@@ -142,14 +126,6 @@ def to_21d_vec(note_list):
             out_vec[idx] = 1
     return out_vec
 
-def specialChords(chord):
-    if chord == "C64" or chord == 'C':
-        output = 'Cad'
-    elif chord == "Gr":
-        output = "Gn"
-    else:
-        output = chord
-    return output
 
-#print(to_21d_vec(['A', 'e', 'c#', 'a']))
+
         
